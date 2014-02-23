@@ -1,0 +1,50 @@
+<header>
+	<h1>Formulário de Usuário</h1>
+	<hr />
+</header>
+
+<section>
+	<form role="form" action="" method="POST" ng-submit="saveUser()"
+		name="userForm" id="userForm" class="form-vertical">
+		<div class="col-md-4 well">
+			<div class="form-group">
+				<label for="realname">Nome Real: </label> <input type="text"
+					name="name" ng-model="user.name" class="form-control" id="name"
+					required />
+			</div>
+			<div class="form-group">
+				<label for="login">Login:</label> <input type="text" name="username"
+					ng-model="user.username" class="form-control" id="username"
+					required />
+			</div>
+
+			<div class="form-group">
+				<label for="login">Senha:</label> <input type="password"
+					name="password" required ng-model="user.password"
+					class="form-control" equals="{{user.passwordConfirm}}" />
+			</div>
+			<div class="form-group">
+				<label for="login">Confirmação da Senha:</label> <input
+					type="password" name="passwordConfirm" required
+					ng-model="user.passwordConfirm" class="form-control"
+					equals="{{user.password}}" />
+			</div>
+
+			<div class="form-group">
+				<label for="login">Habilitado:</label> <input type="checkbox"
+					value="true" id="enabledUser" name="enabledUser"
+					ng-model="user.enabled" />
+			</div>
+			<div class="form-group">
+				<label>Perfil:</label> <label class="radio-inline"><input
+					type="radio" class="radio" value="ADMINISTRATOR" name="type"
+					ng-model="user.profile" /> Administrador</label> <label
+					class="radio-inline"><input type="radio" class="radio"
+					value="OPERATOR" name="type" ng-model="user.profile" /> Operador</label>
+			</div>
+			<input type="submit" value="Gravar" class="btn btn-primary"
+				data-ng-disabled="userForm.$invalid" />
+		</div>
+
+	</form>
+</section>

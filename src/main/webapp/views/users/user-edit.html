@@ -1,0 +1,60 @@
+<header>
+	<h1>Formulário de Usuário</h1>
+	<hr />
+</header>
+
+<form role="form" action="" method="POST" ng-submit="saveUser()"
+	name="userForm" id="userForm" class="form-vertical">
+
+	<div class="col-md-4 well">
+		<div class="form-group">
+			<label for="realname">Nome Real: </label> <input type="text"
+				name="name" ng-model="user.name" class="form-control" id="name" />
+		</div>
+		<div class="form-group">
+			<label for="username">Login:</label> <input type="text"
+				name="username" ng-model="user.username" class="form-control"
+				id="username" ng-disabled="true" />
+		</div>
+
+		<input type="button" class="btn btn-info"
+			ng-click="changePassword()" value="Alterar Senha" />
+		<hr>
+		<div collapse="editPassword">
+			<div class="form-group">
+				<label for="passwordOld">Senha atual:</label> <input type="password"
+					name="passwordOld" ng-model="user.passwordOld" class="form-control" />
+			</div>
+
+			<div class="form-group">
+				<label for="password">Senha:</label> <input type="password"
+					name="password" ng-model="user.password" class="form-control"
+					equals="{{user.passwordConfirm}}" />
+			</div>
+			<div class="form-group">
+				<label for="passwordConfirm">Confirmação da Senha:</label> <input
+					type="password" name="passwordConfirm"
+					ng-model="user.passwordConfirm" class="form-control"
+					equals="{{user.password}}" />
+			</div>
+			<hr>
+		</div>
+
+		<div class="form-group">
+			<label for="enabledUser">Habilitado:</label> <input type="checkbox"
+				value="true" id="enabledUser" name="enabledUser"
+				ng-model="user.enabled" />
+		</div>
+		<div class="form-group">
+			<label>Perfil:</label> <label class="radio-inline"><input
+				type="radio" class="radio" value="ADMINISTRATOR" name="type"
+				ng-model="user.profile" /> Administrador</label> <label
+				class="radio-inline"><input type="radio" class="radio"
+				value="OPERATOR" name="type" ng-model="user.profile" /> Operador</label>
+		</div>
+		<input type="submit" value="Gravar" class="btn btn-primary"
+			data-ng-disabled="userForm.$invalid" />
+	</div>
+
+
+</form>

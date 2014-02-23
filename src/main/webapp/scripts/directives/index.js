@@ -1,0 +1,4 @@
+define([
+	'./navBar',
+	'./equals'
+], function() {});

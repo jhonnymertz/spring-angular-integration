@@ -1,0 +1,1 @@
+define(['./interpolate'], function() {});
