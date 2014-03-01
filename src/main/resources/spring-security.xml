@@ -19,16 +19,15 @@
 			position="FORM_LOGIN_FILTER" />
 		<security:intercept-url pattern="/services/authenticate"
 			access="permitAll" />
+		<security:intercept-url method="GET"
+			pattern="/services/users/**" access="isAuthenticated()" />
+		<security:intercept-url method="POST"
+			pattern="/services/users/**" access="isAuthenticated()" />
 		<security:intercept-url pattern="/services/users/**"
 			access="hasRole('ROLE_ADMINISTRATOR')" />
-		<security:intercept-url method="GET" pattern="/services/**"
+		<security:intercept-url pattern="/services/**"
 			access="isAuthenticated()" />
-		<security:intercept-url method="PUT" pattern="/services/**"
-			access="isAuthenticated()" />
-		<security:intercept-url method="POST" pattern="/services/**"
-			access="isAuthenticated()" />
-		<security:intercept-url method="DELETE"
-			pattern="/services/**" access="isAuthenticated()" />
+
 	</security:http>
 
 </beans>
