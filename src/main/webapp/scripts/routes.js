@@ -1,6 +1,9 @@
 define(['./app'], function(app) {
 	return app.config(['$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
 		$routeProvider
+	      .when('/', {
+	        templateUrl: 'views/main.html',
+	      })
 	      .when('/users', {
 	        templateUrl: 'views/users/users.html',
 	        controller: 'UsersCtrl'
@@ -17,11 +20,20 @@ define(['./app'], function(app) {
 	        templateUrl: 'views/login.html',
 	        controller: 'LoginCtrl'
 	      })
+	      .when('/400', {
+	        templateUrl: 'views/errors/400.html'
+	      })
 	      .when('/403', {
 	        templateUrl: 'views/errors/403.html'
 	      })
+	      .when('/404', {
+	        templateUrl: 'views/errors/404.html'
+	      })
+	      .when('/500', {
+	        templateUrl: 'views/errors/500.html'
+	      })
 	      .otherwise({
-	        redirectTo: '/users'
+	        redirectTo: '/404'
 	      });
 		
 		/* Intercept http errors */
@@ -44,8 +56,10 @@ define(['./app'], function(app) {
 	            	$rootScope.logout();
 	            } else if (status == 403) {
 	            	$location.url('/403');
+	            } else if (status == 500) {
+	            	$location.url('/500');
 	            } else{
-	            	$rootScope.error = method + " on " + url + " failed with status " + status;
+	            	//skip others
 	            }
 	            
 	            return $q.reject(response);

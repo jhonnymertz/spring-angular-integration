@@ -36,11 +36,10 @@ define(['./module'], function (controllers) {
                             		var index = $scope.users.indexOf(user);
 	                                $scope.users.splice(index, 1);
 	                                $scope.tableParams.reload();
-	                                toaster.pop('success', 'Usuários', 'Remoção realizada com sucesso!');
+	                                toaster.pop('success', 'Usuários', 'Usuário ' + user.name + ' removido!');
                             	}
-                            })($scope.users[j])), function err(data) {
-                        		
-                        		toaster.pop('error', 'Usuários', 'Não foi possível realizar a remoção!');
+                            })($scope.users[j])), function err(response) {
+                        		toaster.pop('error', 'Usuários', response.data.message);
                             });
                         }
                     }
@@ -69,16 +68,8 @@ define(['./module'], function (controllers) {
                 userService.save({}, user, function success(data) {
                 	toaster.pop('success', 'Usuários', 'Usuário salvo com sucesso!');
                     $location.path("/users");
-                }, function error(data) {
-                	//TODO refatorar mensagens de erro e definir padrões
-                    if (data.data.indexOf("Username already in use") != -1) {
-                    	toaster.pop('error', 'Usuários', 'Nome de usuário já existe!');
-                    	
-                    } else if (data.data.indexOf("Passwords don't match") != -1) {
-                    	toaster.pop('error', 'Usuários', 'Senhas não conferem!');
-                    } else {
-                    	toaster.pop('error', 'Usuários', 'Erro ao salvar informações!');
-                    }
+                }, function error(response) {
+                	toaster.pop('error', 'Usuários', response.data.message);
                 });
             }
         };
@@ -134,15 +125,9 @@ define(['./module'], function (controllers) {
                 userService.save({}, user, function success(data) {
                 	toaster.pop('success', 'Usuários', 'Informações salvas com sucesso!');
                 	
-                }, function error(data) {
+                }, function error(response) {
                 	//TODO refatorar mensagens de erro e definir padrões
-                    if (data.data.indexOf("Passwords don't match") != -1) {
-                    	toaster.pop('error', 'Usuários', 'Senhas não conferem!');
-                    } else if (data.data.indexOf("A senha antiga informada é inválida") != -1) {
-                    	toaster.pop('error', 'Usuários', 'Senha atual incorreta!');
-                    } else {
-                    	toaster.pop('error', 'Usuários', 'Erro ao atualizar informações!');
-                    }
+                	toaster.pop('error', 'Usuários', response.data.message);
                 });
             }
         };

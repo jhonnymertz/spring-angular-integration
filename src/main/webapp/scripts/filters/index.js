@@ -1,1 +1,1 @@
-define(['./interpolate'], function() {});
+define([], function() {});

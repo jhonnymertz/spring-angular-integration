@@ -31,7 +31,7 @@ define([
         'ngTable',
         'toaster',
     ])
-    //operações globais de usuario
+    //user operations
     .run(function ($rootScope, $http, $location, $cookieStore) {
 
         $rootScope.hasRole = function (role) {
@@ -61,7 +61,7 @@ define([
         };
 
     })
-    //monitoração de mudança de rotas e conteúdo
+    //monitoring route changes
     .run(function ($route, $rootScope, $http, $location, $cookieStore, $anchorScroll) {
 
         $rootScope.$on('$routeChangeStart', function (event, next, current) {
@@ -80,19 +80,6 @@ define([
             }
 
         });
-
-        /* Reset error when a new view is loaded */
-        $rootScope.$on('$viewContentLoaded', function () {
-            delete $rootScope.error;
-        });
-        
-        $rootScope.scrollTo = function (id, event) {
-            var old = $location.hash();
-            $location.hash(id);
-            $anchorScroll();
-            //reset to old to keep any additional routing logic from kicking in
-            $location.hash(old);
-        };
 
     });
 
