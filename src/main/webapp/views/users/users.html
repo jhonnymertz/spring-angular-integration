@@ -5,19 +5,16 @@
 </style>
 
 <header>
-	<h1>Usuários</h1>
+	<h1>Users</h1>
 	<hr />
 </header>
 
 <section>
 
 	<p>
-		<a href="" ng-click="deleteUsers()" class="btn btn-danger pull-right">
-		<span class="glyphicon glyphicon-minus"></span>
-		Excluir Selecionados</a>
-		<a href="#/users/form" class="btn btn-primary pull-right margin-right">
-			<span class="glyphicon glyphicon-plus"></span>
-			Novo Usuário</a>
+		<a href="#/users/form" class="btn btn-primary pull-right"> <span
+			class="glyphicon glyphicon-plus"></span> New User
+		</a>
 	</p>
 
 	<br /> <br />
@@ -27,15 +24,19 @@
 			<td data-title="'Nome'" sortable="'name'">{{user.name}}</td>
 			<td data-title="'Login'" sortable="'username'">{{user.username}}</td>
 			<td data-title="'Perfil'" sortable="'profile'">{{user.profile}}</td>
-			<td data-title="'Ações'"><a href="#/users/form/{{user.id}}" class="btn btn-link"
-				data-toggle="tooltip" data-placement="top" title="Editar">
-				<span class="glyphicon glyphicon-pencil"></span>
-				</a>
-			</td>
+			<td data-title="'Ações'"><a href="#/users/form/{{user.id}}"
+				class="btn btn-link" data-toggle="tooltip" data-placement="top"
+				title="Editar"> <span class="glyphicon glyphicon-pencil"></span>
+			</a></td>
 			<td data-title="''"><input type="checkbox" name="users[]"
 				value="{{user.username}}"
 				ng-checked="selectedUsers.indexOf(user.username) > -1"
 				ng-click="toggleSelection(user.username)" /></td>
 		</tr>
 	</table>
+	<p>
+		<a href="" ng-click="deleteUsers()" class="btn btn-danger pull-right">
+			<span class="glyphicon glyphicon-minus"></span> Delete users
+		</a>
+	</p>
 </section>
