@@ -32,7 +32,7 @@ public class MongoConfiguration {
 	DBCollection mongoDB() throws DataAccessException, Exception {
 		DB db = mongoDbFactory().getDb();
 		
-		DBCollection collection = db.getCollection("reports");
+		DBCollection collection = db.getCollection("users");
 		return collection;
 	}
 

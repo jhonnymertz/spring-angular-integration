@@ -25,18 +25,18 @@ public class ApplicationConfiguration {
 	}
 	
 	private void createUsers() {
-		log.debug("Verificando se já existem usuários...");
+		log.debug("Verifying if there are users...");
 		
 		if (userService.count() == 0) {
-			createUser("Administrador", "admin", "admin", Profile.ADMINISTRATOR);
-			createUser("Administrador", "oper", "oper", Profile.OPERATOR);
+			createUser("Administrator", "admin", "admin", Profile.ADMINISTRATOR);
+			createUser("Operator", "oper", "oper", Profile.OPERATOR);
 		}
 		
-		log.debug("Usuários OK.");
+		log.debug("Users OK.");
 	}
 
 	private void createUser(String name, String username, String password, Profile profile) {
-		log.debug("Criando Usuário: {}", name);
+		log.debug("Creating user: {}", name);
 		User user = new User();
 		user.setProfile(profile);
 		user.setPassword(password);
