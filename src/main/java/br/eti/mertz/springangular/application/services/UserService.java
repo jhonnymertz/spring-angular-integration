@@ -4,6 +4,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.eti.mertz.springangular.application.controllers.advice.ServerException;
 import br.eti.mertz.springangular.application.domain.access.User;
 
 @Transactional(propagation=Propagation.REQUIRED)
@@ -15,6 +16,6 @@ public interface UserService extends UserDetailsService {
 	public User findById(Long id);
 	public long count();
 	public boolean checkCorrectPassword(User user, String password);
-	public User save(User user);
-	public void delete(Long userId);
+	public User save(User user) throws ServerException;
+	public void delete(Long userId) throws ServerException;
 }

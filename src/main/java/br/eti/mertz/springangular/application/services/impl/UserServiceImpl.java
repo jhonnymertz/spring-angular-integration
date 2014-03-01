@@ -1,12 +1,10 @@
 package br.eti.mertz.springangular.application.services.impl;
 
-import javax.persistence.NoResultException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import br.eti.mertz.springangular.application.controllers.advice.ServerException;
 import br.eti.mertz.springangular.application.domain.access.User;
 import br.eti.mertz.springangular.application.repositories.jpa.UserRepository;
 import br.eti.mertz.springangular.application.services.UserService;
@@ -35,15 +34,21 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public User save(User user) {
+	public User save(User user) throws ServerException {
+		
 		if (user.getId() != null) {
 			User u = this.userRepository.findOne(user.getId());
+			
+			if (!this.getCurrentUser().equals(u) && !AuthorityUtils.authorityListToSet(this.getCurrentUser().getAuthorities()).contains("ROLE_ADMINISTRATOR")) {
+				throw new ServerException("You cannot edit another user");
+			}
+			
 			if (user.getPasswordChange() != null && !StringUtils.isEmpty(user.getPasswordChange().getValue())) {
 				if (!this.passwordEncoder.matches(user.getPasswordChange().getOlder(), u.getPassword())) {
-					throw new RuntimeException("A senha antiga informada é inválida");
+					throw new ServerException("Old password is invalid");
 				}
 				if (!user.getPasswordChange().getValue().equals(user.getPasswordChange().getConfirm())) {
-					throw new RuntimeException("Passwords don't match");
+					throw new ServerException("Passwords don't match");
 				}
 				
 				user.setPassword(passwordEncoder.encode(user.getPasswordChange().getValue()));
@@ -53,10 +58,10 @@ public class UserServiceImpl implements UserService {
 			user.setUsername(u.getUsername());
 		} else {
 			if (this.userRepository.findByUsername(user.getUsername()) != null) {
-				throw new RuntimeException("Username already in use");
+				throw new ServerException("Username already in use");
 			}
 			if (!user.getPassword().equals(user.getPasswordConfirm())) {
-				throw new RuntimeException("Passwords don't match");
+				throw new ServerException("Passwords don't match");
 			}
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 		}
@@ -70,10 +75,10 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public void delete(Long userId) {
+	public void delete(Long userId) throws ServerException {
 		User u = userRepository.findOne(userId);
 		if (this.getCurrentUser().equals(u)) {
-			throw new RuntimeException("Você não pode se excluir");
+			throw new ServerException("You cannot delete yourself");
 		}
 		this.userRepository.delete(u);
 	}
@@ -86,9 +91,6 @@ public class UserServiceImpl implements UserService {
 		return userRepository.save(user);
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public User update(User user) {
 		User u = this.userRepository.findOne(user.getId());
@@ -114,18 +116,13 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public UserDetails loadUserByUsername(String username)
-			throws UsernameNotFoundException, DataAccessException {
+	public UserDetails loadUserByUsername(String username) {
 		User user = null;
-		
-		try {
 			user = userRepository.findByUsername(username);
-			if (user == null || user.getId() == null || user.getId() == 0) 
-				throw new NoResultException("Not found");
-		} catch(NoResultException e) {
-			logger.error("Tentativa de login sem sucesso, nome de usuário : " + username, e);
-			throw new UsernameNotFoundException(e.getMessage());
-		}
+			if (user == null || user.getId() == null || user.getId() == 0){
+				logger.error("Log in fail, username: " + username);
+				throw new UsernameNotFoundException("User does not found");
+			}
 		return user;
 	}
 	
@@ -148,10 +145,7 @@ public class UserServiceImpl implements UserService {
 	public long count() {
 		return userRepository.count();
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
+
 	@Override
 	public boolean checkCorrectPassword(User user, String password) {
 		User u = this.userRepository.findOne(user.getId());

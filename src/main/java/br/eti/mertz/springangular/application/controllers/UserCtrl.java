@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.eti.mertz.springangular.application.controllers.advice.ServerException;
 import br.eti.mertz.springangular.application.domain.access.User;
 import br.eti.mertz.springangular.application.repositories.jpa.UserRepository;
 import br.eti.mertz.springangular.application.services.UserService;
@@ -54,14 +55,14 @@ public class UserCtrl {
 	
 	@ResponseBody
 	@RequestMapping(value="/users/{id}", method=RequestMethod.DELETE)
-	public User deleteUser(@PathVariable Long id) {
+	public User deleteUser(@PathVariable Long id) throws ServerException {
 		userService.delete(id);
 		return null;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="users", method=RequestMethod.POST)
-	public User doInsertUser(@RequestBody User user) {
+	public User doInsertUser(@RequestBody User user) throws ServerException {
 		return this.userService.save(user);
 	}
 	
@@ -73,7 +74,7 @@ public class UserCtrl {
 	
 	@ResponseBody
 	@RequestMapping(value="profile", method=RequestMethod.POST)
-	public User doChangeProfile(@RequestBody User user) {
+	public User doChangeProfile(@RequestBody User user) throws ServerException {
 		return this.userService.save(user);
 	}
 }
