@@ -35,6 +35,7 @@ Aspects presented in project:
 * routeChange listener checking credentials;
 * HTTP interceptor to catch errors form back-end;
 * User operation methods in $rootScope:
+
         ng-show = "hasRole('ROLE_ADMINISTRATOR')" #enable or disable content based on roles
         
         ng-click = "logout()" #erase any authetication record
