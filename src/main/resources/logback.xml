@@ -10,18 +10,7 @@
 			<pattern>%date %5p %40.40c:%4L - %m%n</pattern>
 		</encoder>
 	</appender>
-	<!-- 
-	<appender name="file" class="ch.qos.logback.core.FileAppender">
-		<file>${catalina.base}/logs/sdp-web.log</file>
-		<encoder>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss} %level [%file:%line] %msg%n</pattern>
-		</encoder>
-	</appender>
 	
-	<logger name="br.org.itai" level="DEBUG">
-		<appender-ref ref="file" />
-	</logger>
- 	-->
 	<root level="DEBUG">
 		<appender-ref ref="console" />
 	</root>
