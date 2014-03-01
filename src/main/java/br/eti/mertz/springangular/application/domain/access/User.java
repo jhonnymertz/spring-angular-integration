@@ -125,47 +125,27 @@ public class User implements UserDetails, CredentialsContainer {
 	public boolean isAccountNonExpired() {
 		return this.enabled;
 	}
-	/**
-	 * Identifica se a conta não está bloqueada
-	 * 
-	 * @return true a conta não está bloqueada
-	 */
+
 	@JsonIgnore
 	public boolean isAccountNonLocked() {
 		return true;
 	}
-	/**
-	 * Identifica se as credenciais não estão expiradas
-	 * 
-	 * @return true as credenciais não estão expiradas
-	 */
+
 	@JsonIgnore
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
-	/**
-	 * Limpa as credenciais do usuário
-	 */
+
 	public void eraseCredentials() {
 	}
-	/**
-	 * Obtém os perfis de usuários do sistema, neste caso obtém o perfil do 
-	 * {@link #getProfile()} e coloca-o em uma lista de {@link GrantedAuthority}
-	 * 
-	 * @return Lista de {@link GrantedAuthority}
-	 */
+
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + this.profile);
 		ArrayList<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		authorities.add(authority);
 		return authorities;
 	}
-	/**
-	 * Implementação do método que verifica a igualdade de um objeto 
-	 * {@link User}, valida a partir do nome de usuário
-	 * 
-	 * @return True caso seja igual, false caso contrário
-	 */
+
 	@Override
 	public boolean equals(Object obj) {
 		if(obj != null && obj instanceof User) {
@@ -176,11 +156,7 @@ public class User implements UserDetails, CredentialsContainer {
 		}
 		return false;
 	}
-	/**
-	 * Obtém o código identificador de instância da classe
-	 * 
-	 * @return Código identificador de instância da classe
-	 */
+
 	@Override
 	public int hashCode() {
 		return username.hashCode();
