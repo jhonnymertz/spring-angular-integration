@@ -5,18 +5,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-	<security:authentication-manager id="authenticationManager">
-		<security:authentication-provider
-			user-service-ref="userService">
-			<security:password-encoder ref="passwordEncoder"></security:password-encoder>
-		</security:authentication-provider>
-	</security:authentication-manager>
-
 	<security:http realm="Protected API" use-expressions="true"
-		auto-config="false" create-session="stateless" entry-point-ref="unauthorizedEntryPoint"
-		authentication-manager-ref="authenticationManager">
-		<security:custom-filter ref="authenticationTokenProcessingFilter"
-			position="FORM_LOGIN_FILTER" />
+		entry-point-ref="servicesForbiddenEntryPoint">
+
 		<security:intercept-url pattern="/services/authenticate"
 			access="permitAll" />
 		<security:intercept-url method="GET"
@@ -28,6 +19,19 @@
 		<security:intercept-url pattern="/services/**"
 			access="isAuthenticated()" />
 
+		<security:form-login login-processing-url="/services/authenticate"
+			username-parameter="username" password-parameter="password"
+			always-use-default-target="false" />
+		<security:logout logout-url="/services/authenticate/logout"
+			logout-success-url="/" />
+
 	</security:http>
+
+	<security:authentication-manager>
+		<security:authentication-provider
+			user-service-ref="userService">
+			<security:password-encoder ref="passwordEncoder"></security:password-encoder>
+		</security:authentication-provider>
+	</security:authentication-manager>
 
 </beans>

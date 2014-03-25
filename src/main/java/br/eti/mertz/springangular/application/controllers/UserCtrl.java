@@ -65,16 +65,4 @@ public class UserCtrl {
 	public User doInsertUser(@RequestBody User user) throws ServerException {
 		return this.userService.save(user);
 	}
-	
-	@ResponseBody
-	@RequestMapping(value="profile", method=RequestMethod.GET)
-	public User doGetProfile() {
-		return this.userService.getCurrentUser();
-	}
-	
-	@ResponseBody
-	@RequestMapping(value="profile", method=RequestMethod.POST)
-	public User doChangeProfile(@RequestBody User user) throws ServerException {
-		return this.userService.save(user);
-	}
 }

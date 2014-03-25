@@ -29,14 +29,26 @@ define(['./module'], function(services) {
 		    );
 	});
 
-	services.factory('loginService', function($resource) {
+
+	services.factory('authenticationService', function($resource) {
 		
-		return $resource('services/:action', {},
+		return $resource('services/authenticate/:action', {},
 				{
 					authenticate: {
 						method: 'POST',
-						params: {'action' : 'authenticate'},
 						headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+					},
+					user: {
+						method: 'GET',
+						params: {'action' : 'user'},
+					},
+					profile: {
+						method: 'GET',
+						params: {'action' : 'profile'},
+					},
+					logout: {
+						method: 'GET',
+						params: {'action' : 'logout'},
 					},
 				}
 			);

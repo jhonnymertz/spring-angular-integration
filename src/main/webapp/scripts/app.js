@@ -21,7 +21,7 @@ define([
         'WebApp.controllers',
         'WebApp.directives',
         'WebApp.services',
-        'WebApp.filters',
+//        'WebApp.filters',
         'ngRoute',
         'ngCookies',
         'ngResource',
@@ -32,54 +32,59 @@ define([
         'toaster',
     ])
     //user operations
-    .run(function ($rootScope, $http, $location, $cookieStore) {
-
+    .run(function ($rootScope, $http, $location, authenticationService) {
+    	
         $rootScope.hasRole = function (role) {
-
-            if ($rootScope.user === undefined) {
+        	
+            if ($rootScope.user === undefined || $rootScope.user.authorities === undefined) {
                 return false;
             }
-
-            if ($rootScope.user.authorities === undefined) {
-                return false;
+            
+            for(var i = 0; i < $rootScope.user.authorities.length; i++){
+            	if($rootScope.user.authorities[i].authority == role)
+            		return true;
             }
-
-            for (var i = 0; i < $rootScope.user.authorities.length; i++) {
-                if ($rootScope.user.authorities[i].authority == role)
-                    return true;
-            }
-
+            
             return false;
+        };
+        
+        $rootScope.isAuthenticated = function () {
+            return $rootScope.user !== undefined;
         };
 
         $rootScope.logout = function () {
-
-            delete $rootScope.user;
-            delete $http.defaults.headers.common['X-Auth-Token'];
-            $cookieStore.remove('user');
-            $location.url("/login");
+        	authenticationService.logout({}, function success() {
+        		delete $rootScope.user;
+				$location.url("/login");
+			}, function error() {
+				
+			});
         };
-
     })
     //monitoring route changes
-    .run(function ($route, $rootScope, $http, $location, $cookieStore, $anchorScroll) {
+    .run(function ($route, $rootScope, $http, $location, authenticationService) {
 
-        $rootScope.$on('$routeChangeStart', function (event, next, current) {
-        	var originalPath = $location.url();
-        	
-        	if(originalPath != '/login')
-        		$rootScope.redirectUrl = angular.copy($location.url());
+    	$rootScope.$on('$routeChangeStart', function (event, next, current) {
+         	
+         	if(!$rootScope.isAuthenticated()){
+         		
+             	var originalPath = $location.url();
+             	
+             	if(originalPath != '/login')
+             		$rootScope.redirectUrl = angular.copy($location.url());
+         		
+ 	        	authenticationService.user({}, function success(data) {
+ 	        		$rootScope.user = data;
+ 	        		
+ 	        		$location.url(originalPath);
+ 	    		}, function error(response) {
+ 	    			delete $rootScope.user;
+ 	    			$rootScope.logout();
+ 	    			$location.url("/login");
+ 	    		});
+         	}
 
-            //verifica se está logado, senão leva ao login
-            $location.url("/login");
-            var user = $cookieStore.get('user');
-            if (user !== undefined) {
-                $rootScope.user = user;
-                $http.defaults.headers.common['X-Auth-Token'] = user.token;
-                $location.url(originalPath);
-            }
-
-        });
+         });
 
     });
 
