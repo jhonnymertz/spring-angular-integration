@@ -1,6 +1,6 @@
 # Spring & AngularJS integration
 
-A project template as an example of integration amoung Spring framework MVC, Rest, Security and Data modules and AngularJS. Inspired in [philipsorst/angular-rest-springsecurity project](https://github.com/philipsorst/angular-rest-springsecurity).
+This sample focus on localhost application which has angular and spring webservices running in the same project. Authentication is based on JSESSIONID and handled by Spring Security.
 
 Aspects presented in project:
 
@@ -37,6 +37,8 @@ Aspects presented in project:
 * User operation methods in $rootScope:
 
         ng-show = "hasRole('ROLE_ADMINISTRATOR')" #enable or disable content based on roles
+
+        ng-show = "isAuthenticated()" #check for authenticated user
         
         ng-click = "logout()" #erase any authetication record
 
@@ -62,4 +64,4 @@ JS libs:
 ### Notes
 
 * It's only an example/demonstration and does not aim to be used for production projects. Use it to learn about the technologies used.
-* Despite there are many different technogies involved, this project focus on Spring Security and Angular integration;
+* Despite there are many different technologies involved, this project focus on Spring Security and Angular integration;
